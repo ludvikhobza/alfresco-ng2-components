@@ -101,7 +101,36 @@ export class AttachFileCloudWidgetComponent extends UploadCloudWidgetComponent i
 
     async openSelectDialog() {
         const selectedMode = this.field.params.multiple ? 'multiple' : 'single';
-
+        this.field.params['customModels'] = [
+            {
+                'name': 'topspeed',
+                'prefixedName': 'car:topspeed',
+                'title': '',
+                'description': '',
+                'dataType': 'd:text',
+                'multiValued': false,
+                'mandatory': false,
+                'mandatoryEnforced': false,
+                'indexed': false,
+                'facetable': 'FALSE',
+                'indexTokenisationMode': '',
+                'constraints': []
+            },
+            {
+                'name': 'VIN',
+                'prefixedName': 'account:VIN',
+                'title': '',
+                'description': '',
+                'dataType': 'd:text',
+                'multiValued': false,
+                'mandatory': false,
+                'mandatoryEnforced': false,
+                'indexed': false,
+                'facetable': 'FALSE',
+                'indexTokenisationMode': '',
+                'constraints': []
+            }
+        ];
         if (this.isAlfrescoAndLocal()) {
             const destinationFolderPath = this.getAliasAndRelativePathFromDestinationFolderPath(this.field.params.fileSource.destinationFolderPath);
             const opts = { relativePath: destinationFolderPath.path };
@@ -112,7 +141,7 @@ export class AttachFileCloudWidgetComponent extends UploadCloudWidgetComponent i
         }
 
         this.contentNodeSelectorService
-            .openUploadFileDialog(this.rootNodeId, selectedMode, this.isAlfrescoAndLocal())
+            .openUploadFileDialog(this.rootNodeId, selectedMode, this.isAlfrescoAndLocal(), this.field.params.customModels)
             .subscribe((selections: Node[]) => {
                 selections.forEach(node => (node['isExternal'] = true));
                 const selectionWithoutDuplication = this.removeExistingSelection(selections);
