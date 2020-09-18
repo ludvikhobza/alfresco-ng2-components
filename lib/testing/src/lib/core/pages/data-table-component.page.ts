@@ -91,9 +91,9 @@ export class DataTableComponentPage {
         return this.allSelectedRows.count();
     }
 
-    async selectRow(columnName: string, columnValue: string, columnPrefix = 'text_'): Promise<void> {
+    async selectRow(columnName: string, columnValue: string): Promise<void> {
         await BrowserActions.closeMenuAndDialogs();
-        const row = this.getRow(columnName, columnValue, columnPrefix);
+        const row = this.getRow(columnName, columnValue);
         await BrowserActions.click(row);
     }
 
@@ -103,15 +103,15 @@ export class DataTableComponentPage {
         await browser.actions().sendKeys(protractor.Key.NULL).perform();
     }
 
-    async selectMultipleRows(columnName: string, items: string[], columnPrefix = ''): Promise<void> {
-        await BrowserActions.pressEscape();
+    async selectMultipleRows(columnName: string, items: string[]): Promise<void> {
+        await browser.actions().sendKeys(protractor.Key.ESCAPE).perform();
         await this.clearRowsSelection();
-        await BrowserActions.pressCmd();
+        await browser.actions().sendKeys(protractor.Key.COMMAND).perform();
         for (const item of items) {
             await this.checkContentIsDisplayed(columnName, item);
-            await this.selectRow(columnName, item, columnPrefix);
+            await this.selectRow(columnName, item);
         }
-        await BrowserActions.releaseKeyPressed();
+        await browser.actions().sendKeys(protractor.Key.NULL).perform();
     }
 
     async clearRowsSelection(): Promise<void> {
@@ -179,8 +179,8 @@ export class DataTableComponentPage {
         return initialList.toString() === sortedList.toString();
     }
 
-    async rightClickOnRow(columnName: string, columnValue: string, columnPrefix = 'text_'): Promise<void> {
-        await this.rightClickOnItem(columnName, columnValue, columnPrefix);
+    async rightClickOnRow(columnName: string, columnValue: string): Promise<void> {
+        await this.rightClickOnItem(columnName, columnValue);
         await BrowserVisibility.waitUntilElementIsVisible(element(by.id('adf-context-menu-content')));
     }
 
@@ -194,9 +194,8 @@ export class DataTableComponentPage {
         await BrowserVisibility.waitUntilElementIsVisible(element(by.id('adf-context-menu-content')));
     }
 
-    async rightClickOnItem(columnName: string, columnValue: string, columnPrefix = ''): Promise<void> {
-        Logger.log(`Right Click On Row ${columnName} ${columnValue}`);
-        const row = this.getRow(columnName, columnValue, columnPrefix);
+    async rightClickOnItem(columnName: string, columnValue: string): Promise<void> {
+        const row = this.getRow(columnName, columnValue);
         await BrowserActions.rightClick(row);
    }
 
@@ -293,8 +292,8 @@ export class DataTableComponentPage {
         await BrowserVisibility.waitUntilElementIsNotVisible(row);
     }
 
-    getRow(columnName: string, columnValue: string, columnPrefix = 'text_'): ElementFinder {
-        return this.rootElement.all(by.xpath(`//div[@title="${columnName}" and @data-automation-id="${columnPrefix}${columnValue}"]//ancestor::adf-datatable-row[contains(@class, 'adf-datatable-row')]`)).first();
+    getRow(columnName: string, columnValue: string): ElementFinder {
+        return this.rootElement.all(by.xpath(`//div[@title='${columnName}']//div[contains(@data-automation-id, '${columnValue}')]//ancestor::adf-datatable-row[contains(@class, 'adf-datatable-row')]`)).first();
     }
 
     getRowByIndex(index: number): ElementFinder {

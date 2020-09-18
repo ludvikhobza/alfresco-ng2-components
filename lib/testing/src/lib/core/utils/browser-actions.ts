@@ -215,16 +215,4 @@ export class BrowserActions {
         stream.write(Buffer.from(pngData, 'base64'));
         stream.end();
     }
-
-    static async pressCmd(): Promise<void> {
-        await browser.actions().sendKeys(protractor.Key.COMMAND).perform();
-    }
-
-    static async pressEscape(): Promise<void> {
-        await browser.actions().sendKeys(protractor.Key.ESCAPE).perform();
-    }
-
-    static async releaseKeyPressed(): Promise<void> {
-        await browser.actions().sendKeys(protractor.Key.NULL).perform();
-    }
 }
