@@ -108,7 +108,6 @@ export class DataTableComponentPage {
         await this.clearRowsSelection();
         await browser.actions().sendKeys(protractor.Key.COMMAND).perform();
         for (const item of items) {
-            await this.checkContentIsDisplayed(columnName, item);
             await this.selectRow(columnName, item);
         }
         await browser.actions().sendKeys(protractor.Key.NULL).perform();
@@ -305,8 +304,8 @@ export class DataTableComponentPage {
         return BrowserActions.getText(this.contents.get(position - 1));
     }
 
-    getCellElementByValue(columnName: string, columnValue: string): ElementFinder {
-        return this.rootElement.all(by.css(`div[title="${columnName}"] div[data-automation-id*="${columnValue}"] span`)).first();
+    getCellElementByValue(columnName: string, columnValue: string, columnPrefix = 'text_'): ElementFinder {
+        return this.rootElement.all(by.css(`div[title="${columnName}"] div[data-automation-id="${columnPrefix}${columnValue}"] span`)).first();
     }
 
     async tableIsLoaded(): Promise<void> {
