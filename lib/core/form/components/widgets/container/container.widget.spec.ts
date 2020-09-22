@@ -141,6 +141,7 @@ describe('ContainerWidgetComponent', () => {
             ];
 
             widget.content = container;
+            widget.numberOfColumns = 3;
 
             expect(widget.fields[0].id).toEqual('1');
             expect(widget.fields[1].id).toEqual('4');
@@ -151,18 +152,6 @@ describe('ContainerWidgetComponent', () => {
             expect(widget.fields[6].id).toEqual('3');
             expect(widget.fields[7]).toEqual(undefined);
             expect(widget.fields[8]).toEqual(undefined);
-        });
-    });
-
-    describe('getColumnWith', () => {
-
-        it('should calculate the column width based on the numberOfColumns and current field\'s colspan property', () => {
-            const container = new ContainerWidgetComponentModel(new FormFieldModel(new FormModel(), { numberOfColumns: 4 }));
-            widget.content = container;
-
-            expect(widget.getColumnWith(undefined)).toBe('25%');
-            expect(widget.getColumnWith(<FormFieldModel> { colspan: 1 })).toBe('25%');
-            expect(widget.getColumnWith(<FormFieldModel> { colspan: 3 })).toBe('75%');
         });
     });
 });
