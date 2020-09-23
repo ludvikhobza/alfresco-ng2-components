@@ -142,7 +142,8 @@
       "OWNER": "Owner",
       "DUE_DATE": "DueDate",
       "SORT": "Sort",
-      "START_DATE": "StartDate"
+      "START_DATE": "StartDate",
+      "COMPLETED_BY": "Completed By"
     },
     "DIALOG": {
       "TITLE": "Save filter as",
